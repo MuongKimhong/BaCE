@@ -246,7 +246,7 @@ impl Settings {
 
 pub fn get_settings_file_path() -> PathBuf {
     let mut file_path = PathBuf::from(env::var("HOME").unwrap());
-    file_path.push("pvt_editor/settings.json");
+    file_path.push("BaCE/settings.json");
     file_path
 }
 

@@ -30,8 +30,8 @@ pub struct AppState {
     pub file_content_caches: Arc<Mutex<AppStateFileContentCaches>>
 }
 
-fn handle_create_pvt_directory(startup_errors: &mut AppStateStartUpErrors) {
-    const FAIL_MSG: &str = "Failed to create pvt_editor folder in home directory";
+fn handle_create_bace_directory(startup_errors: &mut AppStateStartUpErrors) {
+    const FAIL_MSG: &str = "Failed to create BaCE folder in home directory";
 
     let home_dir = match env::var("HOME") {
         Ok(path) => PathBuf::from(path),
@@ -40,7 +40,7 @@ fn handle_create_pvt_directory(startup_errors: &mut AppStateStartUpErrors) {
             return;
         }
     };
-    let pvt_editor_dir = home_dir.join("pvt_editor");
+    let pvt_editor_dir = home_dir.join("BaCE");
     if !pvt_editor_dir.exists() {
         match fs::create_dir_all(&pvt_editor_dir) {
             Ok(_) => (),
@@ -53,7 +53,7 @@ pub fn run() {
     let mut startup_errors: AppStateStartUpErrors = Vec::new();
     let file_content_caches: AppStateFileContentCaches = HashMap::new();
 
-    handle_create_pvt_directory(&mut startup_errors); 
+    handle_create_bace_directory(&mut startup_errors); 
 
     init_settings_file().unwrap_or_else(|e| {
         startup_errors.push(format!("{e}"));
