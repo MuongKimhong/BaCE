@@ -12,26 +12,36 @@ function setBackgroundColor(app: any, bgColor: string): void {
 }
 
 async function setBackgroundImage(app: any, bgBase64: string): Promise<void> {
-  let texture = await Assets.load(bgBase64);
+  try {
+    let texture = await Assets.load(bgBase64);
 
-  app.bgImageSprite = new Sprite(texture);
-  app.bgImageSprite.width = window.innerWidth;
-  app.bgImageSprite.height = window.innerHeight;
-  app.canvas.stage.addChild(app.bgImageSprite);
+    app.bgImageSprite = new Sprite(texture);
+    app.bgImageSprite.width = window.innerWidth;
+    app.bgImageSprite.height = window.innerHeight;
+    app.canvas.stage.addChild(app.bgImageSprite);
 
-  if (!app.resizeListenerAdded) {
-    window.addEventListener("resize", () => {
-      app.bgImageSprite.width = window.innerWidth;
-      app.bgImageSprite.height = window.innerHeight;
-    });
-    app.resizeListenerAdded = true;
+    if (!app.resizeListenerAdded) {
+      window.addEventListener("resize", () => {
+        app.bgImageSprite.width = window.innerWidth;
+        app.bgImageSprite.height = window.innerHeight;
+      });
+      app.resizeListenerAdded = true;
+    }
+  } catch (_) {
+    throw new Error(
+      `Failed to load background image into webgl renderer. Please check image path in $HOME/BaCE/settings.json`
+    );
   }
 }
 
 async function handleBgImageChange(app: any, event: any): Promise<void> {
   if (app.bgImageSprite) {
     app.canvas.stage.removeChild(app.bgImageSprite);
-    await setBackgroundImage(app, event.payload);
+    try {
+      await setBackgroundImage(app, event.payload);
+    } catch (e) {
+      throw new Error(`Error while changing background image: ${e.message}`);
+    }
   }
 }
 

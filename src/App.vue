@@ -62,7 +62,12 @@ export default {
       async handler(config) {
         if (config) {
           if (config.bgType === "image") {
-            await helper.setBackgroundImage(this, config.bgImageBase64);
+            try {
+              await helper.setBackgroundImage(this, config.bgImageBase64);
+            }
+            catch(e) {
+              await this.$dialogMessage(e.message, { title: "BaCE", kind: "error" });
+            }
           } 
           else {
             helper.setBackgroundColor(this, config.bgColor);
@@ -82,7 +87,12 @@ export default {
   created() {
     this.createPixi();
     this.$listenTauriEvent("bg-image-change", async (event) => {
-      await helper.handleBgImageChange(this, event);
+      try {
+        await helper.handleBgImageChange(this, event);
+      }
+      catch(e) {
+        await this.$dialogMessage(e.message, { title: "BaCE", kind: "error" });
+      }
     });
     this.$listenTauriEvent("bg-type-change-image-to-color", (event) => {
       helper.handleBgTypeChangeImageToColor(this, event);
