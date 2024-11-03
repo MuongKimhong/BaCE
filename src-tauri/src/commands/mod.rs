@@ -178,7 +178,13 @@ pub async fn save_file(
         Ok(_) => {
             if file_path.to_string() == get_settings_file_path_cmd() {
                 let mut settings_state = state.settings_config.lock().unwrap();
-                let mut new_settings_config: Settings = read_settings_file().unwrap();
+                let mut new_settings_config: Settings = match read_settings_file() {
+                    Ok(s) => s,
+                    Err(e) => {
+                        app.emit("internal_error", format!("{e}")).unwrap();
+                        return Err(());
+                    }
+                };
 
                 if let Some(ref mut settings) = *settings_state {
                     cmd_utils::detect_bg_image_path_change(&app, &settings, &mut new_settings_config);

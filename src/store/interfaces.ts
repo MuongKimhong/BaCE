@@ -29,6 +29,13 @@ export interface SyntaxHighlight {
   languages: Array<LanguageSyntaxHighlight>;
 }
 
+interface AppSetting {
+  bgType: string; // image, color, default: color
+  bgColor: string; // color name: default #212121
+  bgImagePath: string;
+  bgImageBase64: string;
+}
+
 export interface SidebarSetting {
   fontSize: string;
   color: string;
@@ -47,11 +54,7 @@ interface EditorSetting {
 }
 
 export interface Settings {
-  bgType: string; // image, color, default: color
-  bgColor: string; // color name: default #212121
-  bgImagePath: string;
-  bgImageBase64: string;
-  fontFamily: string;
+  app: AppSetting;
   sideBar: SidebarSetting;
   tabBar: TabBarSetting;
   editor: EditorSetting;

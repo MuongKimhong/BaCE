@@ -11,6 +11,15 @@ use crate::errors::{FileError, SettingsError};
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
+pub struct AppSetting {
+    pub bg_type: String, // image, color, default: color
+    pub bg_color: String, // color name: default #212121
+    pub bg_image_path: String, // full path to image on system: default ""
+    pub bg_image_base64: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct SidebarSetting {
     pub font_size: String,
     pub color: String,
@@ -57,11 +66,7 @@ pub struct SyntaxHighlight {
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(rename_all = "camelCase")]
 pub struct Settings {
-    pub bg_type: String, // image, color, default: color
-    pub bg_color: String, // color name: default #212121
-    pub bg_image_path: String, // full path to image on system: default ""
-    pub bg_image_base64: String,
-    pub font_family: String,
+    pub app: AppSetting,
     pub side_bar: SidebarSetting,
     pub tab_bar: TabBarSetting,
     pub editor: EditorSetting,
@@ -72,6 +77,17 @@ pub struct Settings {
 pub struct SettingsValidation {
     pub passed: bool,
     pub msg: String
+}
+
+impl AppSetting {
+    fn init_default_values() -> AppSetting {
+        AppSetting {
+            bg_type: "color".to_string(),
+            bg_color: "#212121".to_string(),
+            bg_image_path: "".to_string(),
+            bg_image_base64: "".to_string(),
+        }
+    }
 }
 
 impl SidebarSetting {
@@ -142,11 +158,7 @@ impl SyntaxHighlight {
 impl Settings {
     pub fn init_default_values() -> Settings {
         Settings {
-            bg_type: "color".to_string(),
-            bg_color: "#212121".to_string(),
-            bg_image_path: "".to_string(),
-            bg_image_base64: "".to_string(),
-            font_family: "monospace".to_string(),
+            app: AppSetting::init_default_values(),
             side_bar: SidebarSetting::init_default_values(),
             tab_bar: TabBarSetting::init_default_values(),
             editor: EditorSetting::init_default_values(),
@@ -171,14 +183,14 @@ impl Settings {
         let allowed_bg_image_types = ["jpeg", "jpg", "webp", "png"];
 
         // Check if background type is valid
-        if !allowed_bg_types.contains(&self.bg_type.as_str()) {
+        if !allowed_bg_types.contains(&self.app.bg_type.as_str()) {
             return SettingsValidation { 
                 passed: false, 
                 msg: "Provided background type is not allowed.".to_string() 
             };
         }
-        if self.bg_type == "image" {
-            if let Err(msg) = self.validate_file_extension(&self.bg_image_path, &allowed_bg_image_types) {
+        if self.app.bg_type == "image" {
+            if let Err(msg) = self.validate_file_extension(&self.app.bg_image_path, &allowed_bg_image_types) {
                 return SettingsValidation { passed: false, msg };
             }
         }
@@ -189,17 +201,17 @@ impl Settings {
         }
     }
 
-    pub fn encode_bg_image_base64(&mut self) -> Result<(), FileError> {
-        match read(&self.bg_image_path) {
+    pub fn encode_bg_image_base64(&mut self) -> Result<(), SettingsError> {
+        match read(&self.app.bg_image_path) {
             Ok(image_data) => {
                 let base64_image = format!(
                     "data:image/jpeg;base64, {}", 
                     encode(image_data)
                 );
-                self.bg_image_base64 = base64_image;
+                self.app.bg_image_base64 = base64_image;
                 Ok(())
             },
-            Err(_) => Err(FileError::ReadFileFail)
+            Err(_) => Err(SettingsError::EncodeBgImageToBase64Fail)
         }
     }
 

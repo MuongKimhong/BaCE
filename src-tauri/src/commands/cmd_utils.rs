@@ -78,10 +78,15 @@ pub fn detect_bg_image_path_change(
     old_settings: &Settings, 
     new_settings: &mut Settings
 ) {
-    if old_settings.bg_image_path != new_settings.bg_image_path {
-        new_settings.encode_bg_image_base64().unwrap();
-        // emit &String
-        app.emit("bg-image-change", &new_settings.bg_image_base64).unwrap();
+    if old_settings.app.bg_image_path != new_settings.app.bg_image_path {
+        match new_settings.encode_bg_image_base64() {
+            Ok(_) => (),
+            Err(e) => {
+                app.emit("internal_error", format!("{e}")).unwrap();
+                return;
+            }
+        }
+        app.emit("bg-image-change", &new_settings.app.bg_image_base64).unwrap();
     }
 }
 
@@ -90,13 +95,19 @@ pub fn detect_bg_type_change(
     old_settings: &Settings, 
     new_settings: &mut Settings
 ) {
-    if old_settings.bg_type != new_settings.bg_type {
-        if new_settings.bg_type.as_str() == "image" {
-            new_settings.encode_bg_image_base64().unwrap();
-            app.emit("bg-image-change", &new_settings.bg_image_base64).unwrap();
+    if old_settings.app.bg_type != new_settings.app.bg_type {
+        if new_settings.app.bg_type.as_str() == "image" {
+            match new_settings.encode_bg_image_base64() {
+                Ok(_) => (),
+                Err(e) => {
+                    app.emit("internal_error", format!("{e}")).unwrap();
+                    return;
+                }
+            }
+            app.emit("bg-image-change", &new_settings.app.bg_image_base64).unwrap();
         }
-        else if new_settings.bg_type.as_str() == "color" {
-            app.emit("bg-type-change-image-to-color", &new_settings.bg_color).unwrap();
+        else if new_settings.app.bg_type.as_str() == "color" {
+            app.emit("bg-type-change-image-to-color", &new_settings.app.bg_color).unwrap();
         }
     }
 }

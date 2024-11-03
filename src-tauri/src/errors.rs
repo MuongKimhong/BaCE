@@ -33,7 +33,10 @@ pub enum SettingsError {
     ReadSettingsFromFileToStructFail,
 
     #[error("Provided value in settings file is invalid")]
-    InvalidSettingsFieldValue
+    InvalidSettingsFieldValue,
+
+    #[error("Fail to encode background image to base64")]
+    EncodeBgImageToBase64Fail
 }
 
 #[derive(Debug, thiserror::Error, PartialEq)]

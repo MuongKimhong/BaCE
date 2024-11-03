@@ -75,7 +75,7 @@ export default {
 
   computed: {
     settings() {
-      return this.$store.state.settings;
+      return this.$store.state.settings.app;
     },
   },
 

@@ -68,7 +68,7 @@ pub fn run() {
     };  
 
     if let Some(ref mut settings) = settings_config {
-        if settings.bg_type == "image" && !settings.bg_image_path.is_empty() {
+        if settings.app.bg_type == "image" && !settings.app.bg_image_path.is_empty() {
             match settings.encode_bg_image_base64() {
                 Ok(_) => (),
                 Err(e) => startup_errors.push(format!("{e}")),
