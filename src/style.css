@@ -1,0 +1,13 @@
+:root {
+  /* font-family: Avenir; */
+  font-family: monospace;
+  font-size: 14px;
+  color-scheme: light dark;
+  color: white;
+  background-color: #212121;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

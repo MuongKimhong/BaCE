@@ -1,0 +1,57 @@
+:root {
+  --tabbar-text-color: white;
+  --tabbar-font-size: 13px;
+}
+
+#tabbar-layout {
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  outline: none;
+  color: var(--tabbar-text-color);
+  font-size: var(--tabbar-font-size);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+.tabbar-btn {
+  font-size: 14px;
+  border: none;
+  border-left: 1px solid rgb(80, 80, 80);
+  border-right: 1px solid rgb(80, 80, 80);
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
+  width: auto;
+}
+.x-btn {
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+.x-btn:hover {
+  background-color: gray;
+}
+.tabbar-item-focused {
+  background-color: rgb(80, 80, 80);
+}
+
+.hover-text {
+  position: absolute;
+  z-index: 1000;
+  background-color: rgb(15, 15, 15);
+  opacity: 0.8;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.tabbar-text-color-changed {
+  color: #f5c262;
+}
