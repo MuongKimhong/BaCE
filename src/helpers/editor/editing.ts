@@ -30,7 +30,7 @@ function addNewLine(editor: any): void {
   if (prop.column === 0) {
     insertNewLineDiv(prop.row); 
   }
-  else if (prop.column >= lineContent.length - 1) {
+  else if (prop.column > lineContent.length - 1) {
     insertNewLineDiv(prop.row + 1);
   }
   else {
