@@ -5,22 +5,29 @@ import store from "../store/index";
 
 async function showCloseTabConfirmDialog(tabItem: any): Promise<void> {
   let msg = `There's unsaved changes for ${tabItem.name} file. Are you sure you want to close this file?`;
-  let answer = await tabItem.$dialogAsk(msg, { title: "BaCE", kind: "warning" });
+  let answer = await tabItem.$dialogAsk(msg, {
+    title: "BaCE",
+    kind: "warning",
+  });
 
   if (answer) {
-    closeTabWithoutSave(tabItem);
+    try {
+      await closeTabWithoutSave(tabItem);
+    } catch (e) {
+      throw new Error(`Fail to close tab: ${e.message}`);
+    }
   }
 }
 
-function closeTabWithoutSave(tabItem: any): void {
-  tabItem
-    .$invokeTauriCommand("delete_file_content_cache", {
-      filePath: this.fullPath,
-    })
-    .then(() => {
-      tabItem.close();
-    })
-    .catch(() => {});
+async function closeTabWithoutSave(tabItem: any): Promise<void> {
+  try {
+    await tabItem.$invokeTauriCommand("delete_file_content_cache", {
+      filePath: tabItem.fullPath,
+    });
+    closeTabItem(tabItem);
+  } catch (_) {
+    throw new Error("Fail to delete content cache");
+  }
 }
 
 function findNearByFile(tabItem: any): SidebarItem | null {

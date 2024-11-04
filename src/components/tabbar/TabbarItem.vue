@@ -7,10 +7,20 @@
     @mouseleave="showHoverText = false"
     @mousemove="handleMouseMove"
   >
-    <span v-show="showHoverText" class="hover-text" ref="hoverText">{{ fullPath }}</span>
-    <button class="tabbar-btn" :class="{ 'tabbar-text-color-changed': fileContentChanged }">
+    <span v-show="showHoverText" class="hover-text" ref="hoverText">{{
+      fullPath
+    }}</span>
+    <button
+      class="tabbar-btn"
+      :class="{ 'tabbar-text-color-changed': fileContentChanged }"
+    >
       {{ name }}
-      <span :id="`close-btn-${id}`" class="x-btn" @click="closeBtnOnClick($event)">x</span>
+      <span
+        :id="`close-btn-${id}`"
+        class="x-btn"
+        @click="closeBtnOnClick($event)"
+        >x</span
+      >
     </button>
   </div>
 </template>
@@ -50,7 +60,7 @@ export default {
 
       if (this.fileContentChanged) {
         this.tabBarItemOnClick();
-        helper.showCloseTabConfirmDialog(this);
+        await helper.showCloseTabConfirmDialog(this);
       } 
       else {
         helper.closeTabItem(this);
