@@ -84,31 +84,31 @@ export default {
     },
   },
 
-  created() {
-    this.createPixi();
-    this.$listenTauriEvent("bg-image-change", async (event) => {
-      try {
-        await helper.handleBgImageChange(this, event);
-      }
-      catch(e) {
-        await this.$dialogMessage(e.message, { title: "BaCE", kind: "error" });
-      }
-    });
-    this.$listenTauriEvent("bg-type-change-image-to-color", (event) => {
-      helper.handleBgTypeChangeImageToColor(this, event);
-    });
-    this.$listenTauriEvent("internal_error", async (event) => {
-      await this.$dialogMessage(event.payload, { title: "BaCE", kind: "error" });
-    });
-  },
-
   async mounted() {
     await helper.checkAppStartupErrs(this);
 
     if (!this.hasAppErr) {
+      await this.createPixi();
+
+      this.$listenTauriEvent("internal_error", async (event) => {
+        await this.$dialogMessage(event.payload, { title: "BaCE", kind: "error" });
+      });
+
       helper.readSettingsConfig(this);
       window.addEventListener("keydown", this.handleKeyDownEvent);
       window.addEventListener("keyup", this.handleKeyUpEvent);
+
+      this.$listenTauriEvent("bg-image-change", async (event) => {
+        try {
+          await helper.handleBgImageChange(this, event);
+        }
+        catch(e) {
+          await this.$dialogMessage(e.message, { title: "BaCE", kind: "error" });
+        }
+      });
+      this.$listenTauriEvent("bg-type-change-image-to-color", (event) => {
+        helper.handleBgTypeChangeImageToColor(this, event);
+      });
     }
   },
 
