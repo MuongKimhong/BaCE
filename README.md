@@ -7,8 +7,9 @@
 - [Linux BaCE_0.1.0_x86_64.rpm build download link via google drive](https://drive.google.com/file/d/1yqoFzZxI_SMcy5vyQRroXVx79Wz_04di/view?usp=drive_link)
 - [MacOS BaCE_0.1.0_x64.dmg build download link via google drive](https://drive.google.com/file/d/12dzatVgELnfm7QdzAl8EbTlNJ0AAmdZz/view?usp=drive_link)
 
-### Clone the project
+https://github.com/user-attachments/assets/65e21c78-9f90-4a9e-8225-76d8e7c5b3c2
 
+### Clone the project
 ```
 https://github.com/MuongKimhong/BaCE.git
 ```
