@@ -1,4 +1,4 @@
-## BaCE - Basic Code Editor with basic vim key-bindings (Side project)
+## BaCE - Basic Code Editor with basic vim key-bindings based on Webview
 
 ### Note: Linux & MacOS only
 
